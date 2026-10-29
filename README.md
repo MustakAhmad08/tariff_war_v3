@@ -1,5 +1,9 @@
 # Brazilian soybean expansion and land-use histories during the US–China tariff dispute (version 3)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23766415.svg)](https://doi.org/10.5281/zenodo.23766415)
+
+Archived release: https://doi.org/10.5281/zenodo.23766415 (v1.0.0). Every release is archived at https://doi.org/10.5281/zenodo.23766414.
+
 Code, data, and manuscript for version 3 of the study. It follows the structure of the original repository, [tariff_war_forest_loss](https://github.com/MustakAhmad08/tariff_war_forest_loss). The core model is a Bayesian structural time-series (CausalImpact) model, with a corrected interpretation and corrected controls:
 
 - **What the model estimates:** the 2019–2024 deviation of Brazil's **total mapped soybean area** from a counterfactual built on 2002–2018 data. It does not estimate forest loss. The earlier claims of 4.5 Mha/yr of additional forest loss and 27.2 Mha of cumulative clearing are withdrawn.
@@ -18,7 +22,7 @@ data/processed/      national annual series (forest_loss.csv), CRU climate, IBGE
 data/derived/        version 2 land-use and exposure-model outputs reused unchanged
 results/tables/      every number reported in the manuscript
 results/figures/     figures (PDF, PNG, TIFF) and the graphical abstract
-manuscript/          data description and the scripts that collect manuscript numbers
+manuscript/          script that collects the numbers reported in the manuscript
 archive/             superseded files kept locally for deletion (not committed)
 ```
 
