@@ -1,0 +1,12 @@
+geography,model,outcome,estimate,ci_low,ci_high,p_value,units,observations,scale
+State,primary_share,Primary-forest loss,-0.0598665002294154,-0.296064720835907,0.176331720377076,0.606259527245332,26,598,log(1 + ha)
+State,level_sensitivity,Primary-forest loss,-7105.27628558569,-22496.3689875724,8285.81641640098,0.350816596316974,26,598,ha/year
+State,volume_sensitivity,Primary-forest loss,-0.0782535777307623,-0.311798794402679,0.155291638941155,0.496497074035446,26,598,log(1 + ha)
+Municipality,all_municipalities_china_share,Woody-class exit,-0.0750775627252327,-0.0871445440457959,-0.0630105814046694,8.76530484871486e-34,5506,126638,log(1 + ha)
+Municipality,all_municipalities_china_volume,Woody-class exit,-0.0737460858192456,-0.0858842193973046,-0.0616079522411867,2.59490571676269e-32,5506,126638,log(1 + ha)
+Municipality,recorded_exporters_china_share,Woody-class exit,-0.0530270049907939,-0.0746897411544911,-0.0313642688270968,1.70465074488639e-06,1895,43585,log(1 + ha)
+"Municipality, matched",matched_sample_baseline,Woody-class exit,-0.0750783324702324,-0.0871477672441634,-0.0630088976963014,9.020169214348509e-34,5503,126569,log(1 + ha)
+"Municipality, matched",contemporaneous_local_enforcement,Woody-class exit,-0.0748437079639968,-0.0868915908360227,-0.0627958250919709,1.0967301779078e-33,5503,126569,log(1 + ha)
+"Municipality, matched",lagged_local_enforcement,Woody-class exit,-0.073060250055619,-0.0849998641885531,-0.061120635922685,9.530148821082689e-33,5503,121066,log(1 + ha)
+"Municipality, matched",state_year_shock_absorption,Woody-class exit,-0.0225997894804335,-0.0361238070320123,-0.0090757719288547,0.0010594529123635,5503,126569,log(1 + ha)
+"Municipality, matched",state_year_plus_local_enforcement,Woody-class exit,-0.0222363374764463,-0.0357522033591458,-0.0087204715937467,0.0012659981836137,5503,126569,log(1 + ha)

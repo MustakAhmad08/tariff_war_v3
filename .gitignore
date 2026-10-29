@@ -1,0 +1,17 @@
+.runtime/
+results/intermediate/
+__pycache__/
+*.pyc
+.Rhistory
+.DS_Store
+~$*.docx
+# Confidential peer-review material (editor's decision letter carries a confidentiality notice):
+revision.md
+manuscript/iScience_response_to_reviewers*.docx
+manuscript/scripts/build_response_letter.py
+manuscript/scripts/line_lookup.py
+# Superseded files kept locally for deletion later:
+archive/
+# Manuscript files under review stay local until acceptance:
+manuscript/*.docx
+manuscript/*.pdf

@@ -1,0 +1,7 @@
+series,period,start_mha,end_mha,mean_annual_growth_mha
+MapBiomas soybean area,2002-2018,17.392,35.796,1.15
+MapBiomas soybean area,2012-2018,25.895,35.796,1.65
+MapBiomas soybean area,2018-2024,35.796,40.727,0.822
+IBGE planted area,2002-2018,16.376,34.838,1.154
+IBGE planted area,2012-2018,25.091,34.838,1.625
+IBGE planted area,2018-2024,34.838,46.209,1.895

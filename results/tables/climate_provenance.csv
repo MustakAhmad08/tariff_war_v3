@@ -1,0 +1,100 @@
+control,comparison,kind,rmse,years
+temp,raw annual,none,0.1512172829628501,24
+temp,"trailing moving average, 2 years",one-sided,0.11251851699461142,24
+temp,"centered moving average, 2 years",two-sided,0.11251851699461142,24
+temp,"trailing moving average, 3 years",one-sided,0.0935859676091093,24
+temp,"centered moving average, 3 years",two-sided,0.06935172554269133,23
+temp,"trailing moving average, 4 years",one-sided,0.08330885057023255,24
+temp,"centered moving average, 4 years",two-sided,0.06180043267049906,23
+temp,"trailing moving average, 5 years",one-sided,0.08257420904858884,24
+temp,"centered moving average, 5 years",two-sided,0.044871533798774885,22
+temp,"trailing moving average, 6 years",one-sided,0.08888780381282188,24
+temp,"centered moving average, 6 years",two-sided,0.051785054979134194,22
+temp,"trailing moving average, 7 years",one-sided,0.09226505370970356,24
+temp,"centered moving average, 7 years",two-sided,0.039084518818491926,21
+temp,"trailing moving average, 8 years",one-sided,0.09573285040065042,24
+temp,"centered moving average, 8 years",two-sided,0.03919008924764111,21
+temp,"trailing moving average, 9 years",one-sided,0.1023394054578444,24
+temp,"centered moving average, 9 years",two-sided,0.03328793204380668,20
+temp,"trailing moving average, 10 years",one-sided,0.11210709165793216,24
+temp,"centered moving average, 10 years",two-sided,0.040074305982761425,20
+temp,"Hodrick-Prescott 2001-2024, lambda 1",two-sided,0.06532047703306611,24
+temp,"one-sided Hodrick-Prescott from 2001, lambda 1",one-sided,0.12885724718919067,19
+temp,"Hodrick-Prescott 2001-2024, lambda 3",two-sided,0.04699452232222479,24
+temp,"one-sided Hodrick-Prescott from 2001, lambda 3",one-sided,0.1150502336651158,19
+temp,"Hodrick-Prescott 2001-2024, lambda 10",two-sided,0.02994299892670361,24
+temp,"one-sided Hodrick-Prescott from 2001, lambda 10",one-sided,0.10268424059795267,19
+temp,"Hodrick-Prescott 2001-2024, lambda 30",two-sided,0.02681137059041025,24
+temp,"one-sided Hodrick-Prescott from 2001, lambda 30",one-sided,0.09302316266510037,19
+temp,"Hodrick-Prescott 2001-2024, lambda 100",two-sided,0.03319702235678128,24
+temp,"one-sided Hodrick-Prescott from 2001, lambda 100",one-sided,0.08317985210126988,19
+temp,"Hodrick-Prescott 2001-2024, lambda 300",two-sided,0.03863095987085487,24
+temp,"one-sided Hodrick-Prescott from 2001, lambda 300",one-sided,0.07626412627322168,19
+temp,"Hodrick-Prescott 2001-2024, lambda 1000",two-sided,0.04189898939167234,24
+temp,"one-sided Hodrick-Prescott from 2001, lambda 1000",one-sided,0.07219794850943628,19
+prec,raw annual,none,67.45984926235758,24
+prec,"trailing moving average, 2 years",one-sided,47.049456193722406,24
+prec,"centered moving average, 2 years",two-sided,47.049456193722406,24
+prec,"trailing moving average, 3 years",one-sided,43.74991045493483,24
+prec,"centered moving average, 3 years",two-sided,31.10297526038806,23
+prec,"trailing moving average, 4 years",one-sided,44.79710948810854,24
+prec,"centered moving average, 4 years",two-sided,30.852592022565464,23
+prec,"trailing moving average, 5 years",one-sided,47.22917965093193,24
+prec,"centered moving average, 5 years",two-sided,21.074210857650826,22
+prec,"trailing moving average, 6 years",one-sided,49.990632999907916,24
+prec,"centered moving average, 6 years",two-sided,26.228036961494787,22
+prec,"trailing moving average, 7 years",one-sided,51.44524757408774,24
+prec,"centered moving average, 7 years",two-sided,21.091710962636245,21
+prec,"trailing moving average, 8 years",one-sided,52.18083465793698,24
+prec,"centered moving average, 8 years",two-sided,25.11996813063121,21
+prec,"trailing moving average, 9 years",one-sided,53.07211470789441,24
+prec,"centered moving average, 9 years",two-sided,25.567466741066738,20
+prec,"trailing moving average, 10 years",one-sided,54.54001704597278,24
+prec,"centered moving average, 10 years",two-sided,29.96516471087725,20
+prec,"Hodrick-Prescott 2001-2024, lambda 1",two-sided,24.27678000547436,24
+prec,"one-sided Hodrick-Prescott from 2001, lambda 1",one-sided,57.469591576263625,19
+prec,"Hodrick-Prescott 2001-2024, lambda 3",two-sided,18.003715472054026,24
+prec,"one-sided Hodrick-Prescott from 2001, lambda 3",one-sided,52.606232147328626,19
+prec,"Hodrick-Prescott 2001-2024, lambda 10",two-sided,14.129754072631792,24
+prec,"one-sided Hodrick-Prescott from 2001, lambda 10",one-sided,49.19009822704965,19
+prec,"Hodrick-Prescott 2001-2024, lambda 30",two-sided,18.511735916023273,24
+prec,"one-sided Hodrick-Prescott from 2001, lambda 30",one-sided,47.806846036214026,19
+prec,"Hodrick-Prescott 2001-2024, lambda 100",two-sided,27.223272813847842,24
+prec,"one-sided Hodrick-Prescott from 2001, lambda 100",one-sided,47.966985569807925,19
+prec,"Hodrick-Prescott 2001-2024, lambda 300",two-sided,34.340672297948565,24
+prec,"one-sided Hodrick-Prescott from 2001, lambda 300",one-sided,49.07305616827451,19
+prec,"Hodrick-Prescott 2001-2024, lambda 1000",two-sided,38.97245982645715,24
+prec,"one-sided Hodrick-Prescott from 2001, lambda 1000",one-sided,50.40816312365082,19
+hum,raw annual,none,0.5329907754048528,24
+hum,"trailing moving average, 2 years",one-sided,0.36625639926150216,24
+hum,"centered moving average, 2 years",two-sided,0.36625639926150216,24
+hum,"trailing moving average, 3 years",one-sided,0.3085547253219738,24
+hum,"centered moving average, 3 years",two-sided,0.22583179581272483,23
+hum,"trailing moving average, 4 years",one-sided,0.3118296977785563,24
+hum,"centered moving average, 4 years",two-sided,0.20340912403117647,23
+hum,"trailing moving average, 5 years",one-sided,0.3405906634069715,24
+hum,"centered moving average, 5 years",two-sided,0.14028995946707146,22
+hum,"trailing moving average, 6 years",one-sided,0.3819881288149626,24
+hum,"centered moving average, 6 years",two-sided,0.18500238873696714,22
+hum,"trailing moving average, 7 years",one-sided,0.39930679729669893,24
+hum,"centered moving average, 7 years",two-sided,0.14328303861420183,21
+hum,"trailing moving average, 8 years",one-sided,0.4088051854948762,24
+hum,"centered moving average, 8 years",two-sided,0.17355376036864165,21
+hum,"trailing moving average, 9 years",one-sided,0.422833925798989,24
+hum,"centered moving average, 9 years",two-sided,0.15921121152903767,20
+hum,"trailing moving average, 10 years",one-sided,0.4467994516558891,24
+hum,"centered moving average, 10 years",two-sided,0.20179494542728024,20
+hum,"Hodrick-Prescott 2001-2024, lambda 1",two-sided,0.18948808882959597,24
+hum,"one-sided Hodrick-Prescott from 2001, lambda 1",one-sided,0.4393340239041776,19
+hum,"Hodrick-Prescott 2001-2024, lambda 3",two-sided,0.1369878833240393,24
+hum,"one-sided Hodrick-Prescott from 2001, lambda 3",one-sided,0.39279995306493715,19
+hum,"Hodrick-Prescott 2001-2024, lambda 10",two-sided,0.10118424808281383,24
+hum,"one-sided Hodrick-Prescott from 2001, lambda 10",one-sided,0.36079245822863387,19
+hum,"Hodrick-Prescott 2001-2024, lambda 30",two-sided,0.12669748000759576,24
+hum,"one-sided Hodrick-Prescott from 2001, lambda 30",one-sided,0.3451395446694657,19
+hum,"Hodrick-Prescott 2001-2024, lambda 100",two-sided,0.17247835122557612,24
+hum,"one-sided Hodrick-Prescott from 2001, lambda 100",one-sided,0.3343843767766855,19
+hum,"Hodrick-Prescott 2001-2024, lambda 300",two-sided,0.20410655081398488,24
+hum,"one-sided Hodrick-Prescott from 2001, lambda 300",one-sided,0.3298068081638637,19
+hum,"Hodrick-Prescott 2001-2024, lambda 1000",two-sided,0.2337301145456076,24
+hum,"one-sided Hodrick-Prescott from 2001, lambda 1000",one-sided,0.3332741369473744,19

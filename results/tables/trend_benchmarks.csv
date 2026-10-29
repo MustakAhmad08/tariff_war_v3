@@ -1,0 +1,11 @@
+series,trend_window,slope_mha_per_year,observed_mean_mha,trend_mean_mha,difference_mha
+MapBiomas soybean area,2002-2018,1.023,38.559,37.238,1.32
+MapBiomas soybean area,2008-2018,1.379,38.559,39.805,-1.246
+MapBiomas soybean area,2012-2018,1.811,38.559,42.369,-3.81
+MapBiomas soybean area,2014-2018,1.908,38.559,42.887,-4.328
+MapBiomas soybean area,flat at 2018,0.0,38.559,35.796,2.763
+IBGE planted area,2002-2018,1.067,40.688,37.606,3.082
+IBGE planted area,2008-2018,1.531,40.688,41.029,-0.341
+IBGE planted area,2012-2018,1.585,40.688,41.409,-0.721
+IBGE planted area,2014-2018,1.086,40.688,38.911,1.777
+IBGE planted area,flat at 2018,0.0,40.688,34.838,5.85
