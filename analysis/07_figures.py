@@ -103,11 +103,17 @@ save(fig, "Figure_2_baseline_bsts")
 
 # Figure 3. Robustness of the average 2019-2024 deviation.
 r = pd.read_csv(T / "bsts_robustness.csv")
+# Match the CausalImpact baseline and stored-control estimates in Table 1.
+ci = pd.read_csv(T / "baseline_model.csv").set_index("check")
+for target, source in [("0_baseline", "baseline_causalimpact"),
+                       ("11a_stored_controls", "stored_controls_causalimpact")]:
+    for column in ("effect_mean_ha", "effect_low_ha", "effect_high_ha"):
+        r.loc[r.check == target, column] = ci.loc[source, column]
 labels = {
     "0_baseline": "Baseline specification",
     "9_niter_10000": "10,000 MCMC iterations",
     "5_impute_with_response": "Imputation with response",
-    "11a_stored_controls": "Stored climate and imputation",
+    "11a_stored_controls": "Stored controls",
     "11b_stored_controls_local_linear": "Stored controls, local linear trend",
     "3c_governance_only_local_linear": "Local linear trend, governance only",
     "10_post_from_2018": "Post-period from 2018",
@@ -144,7 +150,7 @@ ax.axvline(0, color=INK2, lw=0.7)
 ax.axhline(gap + 0.5, color=GRID, lw=0.8)
 ax.set_yticks(ypos, rows.label)
 ax.set_xlabel("Average deviation, observed − counterfactual (Mha)")
-ax.text(-0.02, gap, "Placebo dates before 2018 (expected ≈ 0)", color=INK, fontweight="bold",
+ax.text(-0.02, gap, "Pre-tariff placebo windows", color=INK, fontweight="bold",
         transform=ax.get_yaxis_transform(), ha="right", va="center", fontsize=6.5)
 ax.plot([], [], "o", color=INK2, ms=5, label="Local-level model")
 ax.plot([], [], "D", color="white", mec=INK2, mew=1.2, ms=4.5, label="Model with trend term")
@@ -161,7 +167,7 @@ gs = fig.add_gridspec(1, 3, width_ratios=[0.9, 1.5, 1.4], wspace=1.05)
 a = fig.add_subplot(gs[0])
 re_, fi = h.loc["reentry", "entry_mha"], h.loc["first", "entry_mha"]
 a.bar(0, re_, color=BLUE, width=0.6)
-a.bar(0, fi, bottom=re_ + 0.05, color=ORANGE, width=0.6)
+a.bar(0, fi, bottom=re_, color=ORANGE, width=0.6)
 a.text(0.38, re_ / 2, f"Re-entry\n{re_:.2f} Mha\n({h.loc['reentry', 'entry_share_pct']:.1f}%)", va="center", color=INK)
 a.text(0.38, re_ + fi / 2, f"First observed\n{fi:.2f} Mha\n({h.loc['first', 'entry_share_pct']:.1f}%)", va="center", color=INK)
 a.set(xlim=(-0.5, 1.6), xticks=[], ylabel="Gross soybean entry, 2019–2024 (Mha)")
@@ -170,15 +176,15 @@ a.set_title("Entry by history", loc="left", color=INK); panel(a, "A")
 b = fig.add_subplot(gs[1])
 names = {"other_agriculture": "Other agriculture", "pasture": "Pasture", "mosaic": "Agricultural mosaic",
          "woody": "Native woody", "nonwoody": "Native nonwoody", "nonvegetated": "Nonvegetated",
-         "plantation": "Forest plantation"}
+         "plantation": "Forest plantation", "water": "Water / aquaculture"}
 oo = o.loc[list(names)]
 # Managed and native classes are a different grouping from panels A and C, so they use
 # neutral ink and aqua rather than the entry-group hues.
-cols = [INK2] * 3 + [AQUA] * 2 + [MUTED] * 2
+cols = [INK2] * 3 + [AQUA] * 2 + [MUTED] * 3
 yy = range(len(oo))[::-1]
 b.barh(list(yy), oo.share_pct, color=cols, height=0.65)
 for y, v in zip(yy, oo.share_pct):
-    b.text(v + 1.5, y, f"{v:.1f}%", va="center", color=INK)
+    b.text(v + 1.5, y, "<0.1%" if 0 < v < 0.05 else f"{v:.1f}%", va="center", color=INK)
 b.set_yticks(list(yy), [names[k] for k in oo.index])
 b.set(xlim=(0, 95), xlabel="Share of entry (%)")
 grid(b, "x"); b.set_title("Class in the year before entry", loc="left", color=INK); panel(b, "B")
@@ -190,9 +196,10 @@ for i, (k, lab, col) in enumerate(groups):
     xs = [j + (i - 1) * (w + 0.03) for j in range(3)]
     c.bar(xs, vals, width=w, color=col, label=lab)
 c.set_xticks(range(3), ["1 year", "3 years", "5 years"])
-c.set(ylabel="Entry with earlier native vegetation (%)", xlabel="History window")
+c.set(ylabel="Entry with earlier native cover (%)", xlabel="History window")
+c.set_ylim(0, 22)
 c.legend(loc="upper left"); grid(c)
-c.set_title("Earlier native vegetation", loc="left", color=INK); panel(c, "C")
+c.set_title("Earlier native cover", loc="left", color=INK); panel(c, "C")
 save(fig, "Figure_4_land_use_link")
 
 # Figure 6. Exposure event studies (v2 models, reported for attribution limits).
@@ -244,7 +251,7 @@ pick = [("0_baseline", "Baseline (local level, 10 controls)"), ("2a_local_linear
         ("4a_no_controls", "No controls"), ("8a_ibge_planted_area", "IBGE planted area")]
 fig, axs = plt.subplots(2, 3, figsize=(174 * MM, 100 * MM), sharex=True)
 for ax, (k, lab), letter in zip(axs.flat, pick, "ABCDEF"):
-    d = rs[rs.check == k]
+    d = pd.read_csv(T / "baseline_model_series.csv") if k == "0_baseline" else rs[rs.check == k]
     ax.fill_between(d.year, d.predicted_low_ha / 1e6, d.predicted_high_ha / 1e6, color=BAND, lw=0)
     ax.plot(d.year, d.predicted_ha / 1e6, color=INK2, lw=1.2, ls=(0, (4, 2)))
     ax.plot(d.year, d.observed_ha / 1e6, color=BLUE, lw=1.6)
@@ -259,7 +266,7 @@ save(fig, "Figure_S2_counterfactual_paths")
 inc = pd.read_csv(T / "baseline_inclusion_probabilities.csv").sort_values("inclusion_probability")
 nice = {"econ_free": "Economic freedom", "cor_con": "Control of corruption", "gov_eff": "Government effectiveness",
         "pol_stab": "Political stability", "rule_law": "Rule of law", "reg_qual": "Regulatory quality",
-        "voice_acc": "Voice and accountability", "hum": "Humidity", "prec": "Precipitation", "temp": "Temperature"}
+        "voice_acc": "Voice and accountability", "hum": "Relative humidity", "prec": "Precipitation", "temp": "Temperature"}
 fig, ax = plt.subplots(figsize=(85 * MM, 62 * MM))
 cols = [AQUA if v in ("hum", "prec", "temp") else BLUE for v in inc.variable]
 ax.barh(range(len(inc)), inc.inclusion_probability, color=cols, height=0.65)
@@ -274,6 +281,8 @@ save(fig, "Figure_S3_inclusion_probabilities")
 # Figure S4. Placebo deviation at every pre-tariff year, with the 2019-2024 estimate.
 pa = pd.read_csv(T / "placebo_all_years.csv")
 rb = pd.read_csv(T / "bsts_robustness.csv").set_index("check")
+for column in ("effect_mean_ha", "effect_low_ha", "effect_high_ha"):
+    rb.loc["0_baseline", column] = ci.loc["baseline_causalimpact", column]
 fig, ax = plt.subplots(figsize=(114 * MM, 64 * MM))
 for tr, col, mk, dx, lab in [("level", INK2, "o", -0.15, "Baseline (local level)"),
                              ("local_linear", AQUA, "D", 0.15, "With local linear trend")]:
@@ -286,9 +295,9 @@ for tr, col, mk, dx, lab in [("level", INK2, "o", -0.15, "Baseline (local level)
     ax.plot(2019 + dx, x.effect_mean_ha / 1e6, mk, color=BLUE if tr == "level" else col, ms=5.5, mec="white", mew=0.8)
 ax.axhline(0, color=INK2, lw=0.7); ax.axvline(2018, color=MUTED, lw=0.7, ls=(0, (3, 2)))
 ax.set_xticks(list(range(2008, 2018)) + [2019], [str(y) for y in range(2008, 2018)] + ["Tariff\n2019–24"])
-ax.set(xlabel="Pseudo-intervention year (evaluated up to four years, ending by 2017)",
+ax.set(xlabel="Placebo start year / tariff-period comparison",
        ylabel="Average deviation (Mha)")
-ax.legend(loc="upper right"); grid(ax)
+ax.legend(loc="lower right", bbox_to_anchor=(1, 1.02), ncol=2); grid(ax)
 save(fig, "Figure_S4_placebo_by_year")
 
 print("Figures written to", FIG)

@@ -15,3 +15,6 @@ archive/
 # Manuscript files under review stay local until acceptance:
 manuscript/*.docx
 manuscript/*.pdf
+manuscript/scripts/build_cover_letter.py
+# Local backups of manuscript files:
+manuscript/backup_*/

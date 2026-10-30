@@ -1,75 +1,96 @@
-"""Graphical abstract (square, 1500 x 1500 px): trade, area versus counterfactual, land origins."""
+"""Square graphical abstract; all quantitative labels read from analysis tables."""
 from pathlib import Path
-
+import argparse
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-T = ROOT / "results" / "tables"
-BLUE, ORANGE, AQUA = "#2a78d6", "#eb6834", "#1baf7a"
-INK, INK2, MUTED, BAND = "#0b0b0b", "#52514e", "#8a8984", "#d9d8d3"
-plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.spines.top": False,
-                     "axes.spines.right": False, "axes.edgecolor": INK2, "xtick.color": INK2,
-                     "ytick.color": INK2, "axes.linewidth": 0.6})
+parser = argparse.ArgumentParser()
+parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+parser.add_argument("--output-dir", type=Path)
+args = parser.parse_args()
+T = args.root / "results" / "tables"
+OUT = args.output_dir or args.root / "results" / "figures"
+OUT.mkdir(parents=True, exist_ok=True)
 
-tr = pd.read_csv(T / "trade_restructuring_annual.csv")
-rs = pd.read_csv(T / "bsts_robustness_series.csv")
+BLUE, ORANGE, GREEN = "#2a78d6", "#d86432", "#168765"
+INK, GRAY, LIGHT = "#182b37", "#53616a", "#e8edef"
+plt.rcParams.update({"font.family": "Arial", "font.size": 9,
+                     "text.color": INK, "axes.labelcolor": GRAY,
+                     "xtick.color": GRAY, "pdf.fonttype": 42,
+                     "ps.fonttype": 42})
+trade = pd.read_csv(T / "trade_restructuring_annual.csv").set_index("year")
+baseline = pd.read_csv(T / "baseline_model.csv").set_index("check").loc["baseline_causalimpact"]
+trend = pd.read_csv(T / "bsts_robustness.csv").set_index("check").loc["2a_local_linear_trend"]
+land = pd.read_csv(T / "land_use_by_period.csv").set_index(["period", "population"]).loc[("2019-2024", "all")]
 
-fig = plt.figure(figsize=(5, 5), dpi=300)
-fig.text(0.03, 0.965, "United States–China tariff dispute and Brazilian soybean expansion", fontsize=10,
-         fontweight="bold", color=INK)
+fig = plt.figure(figsize=(6, 6), dpi=300, facecolor="white")
+def txt(x, y, s, size=9, color=INK, weight="normal", **kwargs):
+    return fig.text(x, y, s, fontsize=size, color=color, weight=weight, **kwargs)
 
-a = fig.add_axes([0.11, 0.56, 0.34, 0.30])
-a.plot(tr.year, tr.brazil_to_china_mt, color=BLUE, lw=2)
-a.plot(tr.year, tr.us_to_china_mt, color=ORANGE, lw=2)
-a.axvline(2018, color=MUTED, lw=0.7, ls=(0, (3, 2)))
-a.lines[0].set_label("Brazil → China"); a.lines[1].set_label("United States → China")
-a.legend(loc="upper left", fontsize=7.5, frameon=False, handlelength=1.4)
-a.set_ylim(0, 105)  # Headroom for the legend.
-a.set_ylabel("Exports (million tonnes)", fontsize=8); a.tick_params(labelsize=7)
-a.set_title("1  Trade shifted to Brazil", loc="left", fontsize=9, color=INK)
+def heading(n, y, title):
+    txt(.06, y, f"{n:02d}", 10, BLUE, "bold")
+    txt(.115, y, title, 11.5, INK, "bold")
 
-b = fig.add_axes([0.62, 0.56, 0.34, 0.30])
-for k, col, ls, lab in [("0_baseline", INK2, (0, (4, 2)), "Baseline model"),
-                        ("2a_local_linear_trend", AQUA, (0, (1, 1.2)), "With trend")]:
-    d = rs[rs.check == k]
-    b.plot(d.year, d.predicted_ha / 1e6, color=col, lw=1.4, ls=ls)
-d = rs[rs.check == "0_baseline"]
-b.plot(d.year, d.observed_ha / 1e6, color=BLUE, lw=2)
-b.axvline(2018.5, color=MUTED, lw=0.7, ls=(0, (3, 2)))
-b.lines[0].set_label("Counterfactual, baseline"); b.lines[1].set_label("Counterfactual, with trend")
-b.lines[2].set_label("Observed")
-h, l = b.get_legend_handles_labels()
-b.legend([h[2], h[0], h[1]], [l[2], l[0], l[1]], loc="lower right", fontsize=7, frameon=False, handlelength=1.6)
-b.set_ylim(2, 43)  # Room below the series for the legend.
-b.set_ylabel("Soybean area (million hectares)", fontsize=8); b.tick_params(labelsize=7)
-b.set_title("2  Area kept growing; no robust\n    excess over pre-2018 path", loc="left", fontsize=9, color=INK)
+txt(.06, .953, "US–China tariffs and", 17, weight="bold")
+txt(.06, .911, "Brazilian soybean expansion", 17, weight="bold")
 
-c = fig.add_axes([0.11, 0.33, 0.85, 0.09])
-# Same period as the model's post-period (2019-2024), as in the Summary.
-lp = pd.read_csv(ROOT / "results" / "tables" / "land_use_by_period.csv").set_index(["period", "population"])
-pp = lp.loc[("2019-2024", "all")]
-managed, native, other = pp.prior_managed_pct, pp.prior_native_pct, pp.prior_other_pct
-left = 0
-for v, col, lab in [(managed, INK2, f"Managed land {managed:.1f}%"), (native, AQUA, ""), (other, MUTED, "")]:
-    c.barh(0, v, left=left, color=col, height=0.6, edgecolor="white", linewidth=1)
-    left += v
-c.text(managed / 2, 0, f"Managed land before entry: {managed:.1f}%", color="white", ha="center", va="center", fontsize=8.5)
-c.set_xlim(0, 100); c.set_yticks([]); c.spines["left"].set_visible(False)
-c.set_xlabel("Share of 2019–2024 soybean entry, class in the year before entry (%)", fontsize=8)
-c.tick_params(labelsize=7)
-c.set_title("3  Land before soybean", loc="left", fontsize=9, color=INK)
+heading(1, .849, "Soybean trade shifted toward Brazil")
+txt(.115, .817, "Exports to China · 2017 → 2018 · million tonnes", 9, GRAY)
 
-fig.text(0.11, 0.15,
-         f"• {pp.native_w5_pct:.1f}% had native vegetation within 5 years ({pp.native_w5_mha:.2f} million hectares),\n"
-         f"   including at least {pp.native_then_managed_min_pct:.1f}% that went native → managed → soybean\n"
-         "• Native vegetation includes savanna and grassland, not only forest\n"
-         "• Shifts in location and pasture displacement are not measured\n"
-         "• Forest loss is neither attributed to the tariff nor ruled out", fontsize=8.5, color=INK, va="center",
-         linespacing=1.5)
-out = ROOT / "results" / "figures" / "Graphical_abstract.png"
-fig.savefig(out, dpi=300)
-fig.savefig(out.with_suffix(".pdf"))
-print(out)
+# Two direct comparisons; the arrows indicate time, not a causal pathway.
+for x, name, column, color in [(.115, "United States", "us_to_china_mt", ORANGE),
+                               (.575, "Brazil", "brazil_to_china_mt", BLUE)]:
+    v0, v1 = trade.loc[2017, column], trade.loc[2018, column]
+    change = 100 * (v1 / v0 - 1)
+    txt(x, .776, name, 10, color, "bold")
+    txt(x, .731, f"{v0:.1f} → {v1:.1f}", 19, color, "bold")
+    txt(x, .700, f"{change:+.0f}%".replace("-", "−"), 10, color, "bold")
+
+heading(2, .638, "Soybean-area estimates depend on the model")
+txt(.115, .606, "Mean observed − counterfactual area · 2019–2024", 9, GRAY)
+
+ax = fig.add_axes([.335, .463, .51, .116])
+ax.set_xlim(-10, 10)
+ax.set_ylim(-.55, 1.55)
+ax.axvline(0, color="#9ba7ae", lw=.8, ls=(0, (3, 3)))
+for y, row, color, name in [(1, baseline, BLUE, "Baseline"), (0, trend, GREEN, "Local linear trend")]:
+    mean, low, high = [row[c] / 1e6 for c in ("effect_mean_ha", "effect_low_ha", "effect_high_ha")]
+    ax.plot([low, high], [y, y], color=color, lw=2.2, solid_capstyle="round")
+    ax.scatter([mean], [y], s=38, color=color, zorder=3)
+    ax.text(-.045, y, name, transform=ax.get_yaxis_transform(), ha="right", va="center", fontsize=9)
+    ax.text(1.05, y, f"{mean:+.2f}".replace("-", "−"), transform=ax.get_yaxis_transform(),
+            va="center", fontsize=10, color=color, weight="bold")
+ax.set_yticks([])
+ax.set_xticks([-10, -5, 0, 5, 10])
+ax.tick_params(axis="x", labelsize=8, length=2, pad=3)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+txt(.59, .412, "Million hectares · points: means; lines: 95% posterior intervals", 8,
+    GRAY, ha="center")
+
+heading(3, .355, "Most soybean entry followed managed land")
+txt(.115, .323, "2019–2024 gross entry · two overlapping history measures", 8.6, GRAY)
+
+for x, value, color, label in [
+    (.115, land.prior_managed_pct, INK, "Managed land\nin the previous year"),
+    (.575, land.native_w5_pct, GREEN, "Native cover in any of\nthe preceding five years")
+]:
+    txt(x, .258, f"{value:.1f}%", 27, color, "bold")
+    txt(x, .207, label, 9, GRAY, linespacing=1.4)
+    bar = fig.add_axes([x, .171, .35, .012])
+    bar.barh(0, 100, height=1, color=LIGHT)
+    bar.barh(0, value, height=1, color=color)
+    bar.set_xlim(0, 100)
+    bar.set_ylim(-.5, .5)
+    bar.axis("off")
+
+txt(.115, .139, "Native cover includes forest, savanna, and grassland.", 8, GRAY)
+txt(.06, .073, "Tariff-driven expansion is not established.", 10.2, weight="bold")
+txt(.06, .044, "Indirect forest loss is not ruled out.", 10.2, weight="bold")
+
+for suffix in ("png", "pdf"):
+    fig.savefig(OUT / f"Graphical_abstract.{suffix}", dpi=300, facecolor="white")
+plt.close(fig)
+print(OUT / "Graphical_abstract.png")
